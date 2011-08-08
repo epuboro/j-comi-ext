@@ -18,25 +18,29 @@
  */
 (function(c){var a=["DOMMouseScroll","mousewheel"];c.event.special.mousewheel={setup:function(){if(this.addEventListener){for(var d=a.length;d;){this.addEventListener(a[--d],b,false)}}else{this.onmousewheel=b}},teardown:function(){if(this.removeEventListener){for(var d=a.length;d;){this.removeEventListener(a[--d],b,false)}}else{this.onmousewheel=null}}};c.fn.extend({mousewheel:function(d){return d?this.bind("mousewheel",d):this.trigger("mousewheel")},unmousewheel:function(d){return this.unbind("mousewheel",d)}});function b(f){var d=[].slice.call(arguments,1),g=0,e=true;f=c.event.fix(f||window.event);f.type="mousewheel";if(f.wheelDelta){g=f.wheelDelta/120}if(f.detail){g=-f.detail/3}d.unshift(f,g);return c.event.handle.apply(this,d)}})(unsafeWindow.jQuery);
 
-
 $ = unsafeWindow.jQuery;
-
 $(function(){
+	var comic = unsafeWindow.JCOMI.comic;
+	var toolbar = unsafeWindow.JCOMI.toolBar;
+
 	$('#left_page').click( function() {
-		$('.next a').click();
+		comic.nextPage();
+		toolbar.update();
 	});
 
 	$('#right_page').click( function() {
-		$('.prev a').click();
+		comic.prevPage();
+		toolbar.update();
 	});
-
 
 	$('#left_page,#right_page').mousewheel( function(event, delta) {
 		if (delta < 0) {
-			$('.next a').click();
+			comic.nextPage();
+			toolbar.update();
 		}
 		else if (delta > 0) {
-			$('.prev a').click();
+			comic.prevPage();
+			toolbar.update();
 		}
 		return false;
 	});
